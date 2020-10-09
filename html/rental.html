@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <title>CarRent</title>
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/site.css">
+</head>
+
+<body>
+  <div id="rent-content">
+    <!-- style="display: none;"> -->
+    <div id="car-content">
+      <div class="container">
+        <div class="table-wrapper">
+          <div class="table-title">
+            <div class="row">
+              <div class="col-sm-2">
+                <h2>Car<b>Rent</b></h2>
+              </div>
+              <div class="col-sm-2">
+                <h2>&emsp;Locações</h2>
+              </div>
+              <div class="col-sm-8">
+                <a href="#" onclick="callRentTableOpen(); return false;" class="btn btn-warning">
+                  <i class="material-icons">&#xeb3c;</i>
+                  <span>Abertas</span></a>
+
+                <a href="#" onclick="callRentTableClose(); return false;" class="btn btn-primary">
+                  <i class="material-icons">&#xe86c;</i>
+                  <span>Fechadas</span></a>
+
+                <a href="#" onclick="callRentTableNew(); return false;" class="btn btn-success">
+                  <i class="material-icons">&#xE147;</i>
+                  <span>Add Nova</span></a>
+              </div>
+            </div>
+          </div>
+
+          <div id="rent-table-content">
+
+          </div>
+
+          <div id="rent-table-new" style="display: none;">
+            <p> new new new new new new new</p>
+          </div>
+
+          <div id="rent-table-open" style="display: none;">
+            <table class="table table-striped table-hover w-auto">
+              <thead>
+                <tr>
+                  <th>Cliente</th>
+                  <th>Funcionario</th>
+                  <th>Carro</th>
+                  <th>Valor/Diaria</th>
+                  <th>Desconto</th>
+                  <th>Retirada</th>
+                  <th>Devolução Prevista</th>
+                  <th>Marcar Devolução</th>
+                </tr>
+              </thead>
+              <tbody id="rent-open"></tbody>
+            </table>
+            <div class="clearfix">
+              <div id="rent-counter" class="hint-text"></div>
+            </div>
+          </div>
+
+          <div id="rent-table-close" style="display: none;">
+            <table class="table table-striped table-hover w-auto">
+              <thead>
+                <tr>
+                  <th>Cliente</th>
+                  <th>Funcionario</th>
+                  <th>Carro</th>
+                  <th>Valor/Diaria</th>
+                  <th>Desconto</th>
+                  <th>Retirada</th>
+                  <th>Devolução Prevista</th>
+                  <th>Devolução Efetiva</th>
+                </tr>
+              </thead>
+              <tbody id="rent-close"></tbody>
+            </table>
+            <div class="clearfix">
+              <div id="rent-counter" class="hint-text"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Client Modal HTML -->
+    <div id="showClientModal" class="modal fade">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <form action="javascript:void(0);">
+            <div class="modal-header">
+              <h4 class="modal-title">Detalhes do Cliente</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                &times;
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="form-group">
+                <label>Nome</label>
+                <input type="text" id="rental-client-name" class="form-control" readonly />
+              </div>
+              <div class="form-group">
+                <label>RG</label>
+                <input type="text" id="rental-client-rg" class="form-control" readonly />
+              </div>
+              <div class="form-group">
+                <label>CPF</label>
+                <input type="text" id="rental-client-cpf" class="form-control" readonly />
+              </div>
+              <div class="form-group">
+                <label>Nascimento</label>
+                <input type="text" id="rental-client-birthday" class="form-control" readonly />
+              </div>
+              <div class="form-group">
+                <label>Telefone</label>
+                <input type="text" id="rental-client-contact" class="form-control" readonly />
+              </div>
+              <div class="form-group">
+                <label>Email</label>
+                <input type="text" id="rental-client-email" class="form-control" readonly />
+              </div>
+            </div>
+            <div class="modal-footer">
+              <input type="button" class="btn btn-primary" data-dismiss="modal" value="OK" />
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Employee Modal HTML -->
+    <div id="showEmployeeModal" class="modal fade">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <form action="javascript:void(0);">
+            <div class="modal-header">
+              <h4 class="modal-title">Detalhes do Funcionario</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                &times;
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="form-group">
+                <label>Nome</label>
+                <input type="text" id="rental-employee-name" class="form-control" readonly />
+              </div>
+              <div class="form-group">
+                <label>Matricula</label>
+                <input type="text" id="rental-employee-serial" class="form-control" readonly />
+              </div>
+              <div class="form-group">
+                <label>CPF</label>
+                <input type="text" id="rental-employee-cpf" class="form-control" readonly />
+              </div>
+              <div class="form-group">
+                <label>Cargo</label>
+                <input type="text" id="rental-employee-role" class="form-control" readonly />
+              </div>
+            </div>
+            <div class="modal-footer">
+              <input type="button" class="btn btn-primary" data-dismiss="modal" value="OK" />
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Car Modal HTML -->
+    <div id="showCarModal" class="modal fade">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <form action="javascript:void(0);">
+            <div class="modal-header">
+              <h4 class="modal-title">Detalhes do Veiculo</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                &times;
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="form-group">
+                <label>Modelo</label>
+                <input type="text" id="rental-car-model" class="form-control" readonly />
+              </div>
+              <div class="form-group">
+                <label>Placa</label>
+                <input type="text" id="rental-car-plate" class="form-control" readonly />
+              </div>
+              <div class="form-group">
+                <label>Marca</label>
+                <input type="text" id="rental-car-brand" class="form-control" readonly />
+              </div>
+              <div class="form-group">
+                <label>Gategoria</label>
+                <input type="text" id="rental-car-group" class="form-control" readonly />
+              </div>
+              <div class="form-group">
+                <label>Cor</label>
+                <input type="text" id="rental-car-color" class="form-control" readonly />
+              </div>
+              <div class="form-group">
+                <label>Ano</label>
+                <input type="text" id="rental-car-year" class="form-control" readonly />
+              </div>
+              <div class="form-group">
+                <label>Preço Diaria</label>
+                <input type="text" id="rental-car-rent-price" class="form-control" readonly />
+              </div>
+            </div>
+            <div class="modal-footer">
+              <input type="button" class="btn btn-primary" data-dismiss="modal" value="OK" />
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Check Return Modal HTML -->
+    <div id="checkReturnRent" class="modal fade">
+      <input type="hidden" id="rental-id" />
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <form action="javascript:void(0);" onsubmit="setRentReturn()">
+            <div class="modal-header">
+              <h4 class="modal-title">Marcar Devolução</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                &times;
+              </button>
+            </div>
+            <div class="modal-body">
+              <p>Você tem certeza que deseja marcar devolução desse Veiculo?</p>
+              <p class="text-warning">
+                <small>Esta acão não é reversivel.</small>
+              </p>
+            </div>
+            <div class="modal-footer">
+              <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel" />
+              <input type="submit" class="btn btn-success" value="OK" />
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script src="../js/rental.js"></script>
+    <script>
+      $("#checkReturnRent").submit(function () {
+        $("#checkReturnRent").modal("hide");
+      });
+
+      function callRentTableOpen() {
+        myDiv = document.getElementById("rent-table-open").cloneNode(true);
+        myDiv.id = "rent-table-open-clone"
+        document.getElementById("rent-table-content").innerHTML = '';
+        myDiv.style.display = "";
+        $(myDiv).appendTo("#rent-table-content");
+        getRentOpen();
+      }
+
+      function callRentTableClose() {
+        myDiv = document.getElementById("rent-table-close").cloneNode(true);
+        myDiv.id = "rent-table-close-clone"
+        document.getElementById("rent-table-content").innerHTML = '';
+        myDiv.style.display = "";
+        $(myDiv).appendTo("#rent-table-content");
+        getRentClose();
+      }
+
+      function callRentTableNew() {
+        myDiv = document.getElementById("rent-table-new").cloneNode(true);
+        myDiv.id = "rent-table-new-clone"
+        document.getElementById("rent-table-content").innerHTML = '';
+        myDiv.style.display = "";
+        $(myDiv).appendTo("#rent-table-content");
+      }
+
+    </script>
+
+  </div>
+</body>
+
+</html>
