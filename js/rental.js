@@ -1,13 +1,90 @@
 const uriRent = "http://localhost:8080/car-rent/rents";
 let rents = [];
+let selectCars = [];
+
+
+function AddNewRental() {    
+    const item = {
+    clientId: parseInt(document.getElementById("new-rental-client-select").value.trim()),
+    employeeId: parseInt(currentUser),
+    carId: parseInt(document.getElementById("new-rental-car-select").value.trim()),
+    discount: parseFloat(document.getElementById("new-rental-discount").value.trim()),
+    dailyCost: document.getElementById("new-rental-daily-cost").value.trim(),
+    expectedReturnDate: document.getElementById("new-rental-expected-return-date").value.trim()
+  };
+
+  fetch(uriRent, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(item)
+  })
+    .then(response => response.json())
+    .then(() => {      
+      callRentTableOpen();
+    })
+    .catch(error => console.error("Unable to add Client.", error));    
+}
 
 function getRentAll() {
-
   fetch(uriRent + "/all")
     .then(response => response.json())
     .then(data => _displayRentsItems(data))
     .catch(error => console.error("Unable to get Rents.", error));
 }
+
+function loadRentNew() {
+  const apiUrl = "http://localhost:8080/car-rent/"
+
+    //load all available cars
+    fetch(apiUrl + "cars/available")
+    .then(response => response.json())
+    .then(function a(data) {
+      data = JSON.stringify(data.responseObject);
+      data = JSON.parse(data);
+      
+      var selectCar = document.getElementById("new-rental-car-select")
+
+      data.forEach(car => {
+        var opt = document.createElement("option");
+        opt.value = car.id;
+        opt.innerHTML = car.model + " - " + car.carPlate;        
+        selectCar.appendChild(opt);
+        
+      })
+      selectCars = data;
+    })
+    .catch(error => console.error("Unable to get Cars.", error));
+
+  //load all clients
+  fetch(apiUrl + "clients/all")
+    .then(response => response.json())
+    .then(function a(data) {
+      data = JSON.stringify(data.responseObject);
+      data = JSON.parse(data);
+      
+      var selectClient = document.getElementById("new-rental-client-select")
+
+      data.forEach(client => {
+        var opt = document.createElement("option");
+        opt.value = client.id;
+        opt.innerHTML = client.name + " - " + client.cpf;        
+        selectClient.appendChild(opt);
+      })
+    })
+    .catch(error => console.error("Unable to get Clients.", error));
+
+    var currentdate = new Date(); 
+    var datetime = currentdate.getDate() + "/"
+                    + (currentdate.getMonth()+1)  + "/" 
+                    + currentdate.getFullYear() + " - "  
+                    + currentdate.getHours() + ":"  
+                    + ((currentdate.getMinutes().length === 1) ? "0" + currentdate.getMinutes() : currentdate.getMinutes());
+    document.getElementById("new-rental-date-withdrawal").value =  datetime;
+}
+
 
 function getRentOpen() {
   fetch(uriRent + "/open")
@@ -112,7 +189,7 @@ function displayEmployeeModal(id) {
   document.getElementById("rental-employee-name").value = item.employee.name;
   document.getElementById("rental-employee-serial").value = item.employee.serial;
   document.getElementById("rental-employee-cpf").value = item.employee.cpf;
-  document.getElementById("rental-employee-role").value = item.employee.role;
+  document.getElementById("rental-employee-role").value = (item.employee.role === 1 ) ? "Vendedor" : "Gerente";
 
 }
 
@@ -136,11 +213,11 @@ function setRentReturn() {
   let id = document.getElementById("rental-id").value;
 
   fetch(uriRent + "/return/" + id)
-  .then(response => response.json())
-  .then(function a(data) {
-    callRentTableOpen();
-  })
-  .catch(error => console.error("Unable to Update Rental.", error));
+    .then(response => response.json())
+    .then(function a(data) {
+      callRentTableOpen();
+    })
+    .catch(error => console.error("Unable to Update Rental.", error));
 }
 
 function _displayRentsItems(data, st) {
@@ -216,7 +293,7 @@ function _displayRentsItems(data, st) {
       btn.setAttribute("onclick", `displayCheckReturnForm_Rent(${item.rental.id})`);
       btn.setAttribute("data-toggle", "modal");
       btn.innerHTML =
-        "<i class='material-icons' data-toggle='tooltip' title='Check'>&#xe86c;</i>";    
+        "<i class='material-icons' data-toggle='tooltip' title='Check'>&#xe86c;</i>";
       td8.appendChild(btn);
     }
   });
