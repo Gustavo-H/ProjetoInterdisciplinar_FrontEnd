@@ -19,6 +19,9 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="./css/site.css">
+    <script type="text/javascript">
+        var currentUser = window.localStorage.getItem("currentUser");
+    </script>
 </head>
 
 <body>
@@ -26,8 +29,7 @@
         <nav id="sidebar">
             <div class="sidebar-header">
                 <a href="#" aria-expanded="false" id="sidebarCollapse">
-                    <h3>Car<b>Rent</b> &emsp; &emsp; <img src="./img/menu.png" alt="" width="40" height="40"
-                            > </h3>
+                    <h3>Car<b>Rent</b> &emsp; &emsp; <img src="./img/menu.png" alt="" width="40" height="40"> </h3>
                     <strong>C<b>R</b></strong>
                 </a>
             </div>
@@ -76,10 +78,438 @@
             <nav class="navbar navbar-default">
                 <div class="container-fluid">
                     <div id="sub-content">
+                        <!-- Pages Content-->
+                        <div class="container" id="home-page-content">
+                            <div class="table-wrapper">
+                                <div class="table-title">
+                                    <h2>Car<b>Rent</b></h2>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 col-lg-4 mt-3">
+                                        <div class="my-card h-100 ">
+                                            <h3>Locações Abertas</h3>
+                                            <h4 class="card-text text-justify" id="home-page-open-rental">Locações</h4>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 col-lg-4 mt-3">
+                                        <div class="my-card h-100">
+                                            <h3>Locações Atrasadas</h3>
+                                            <h4 class="card-text text-justify" id="home-page-late-rental">Locações
+                                            </h4>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 col-lg-4 mt-3">
+                                        <div class="my-card h-100">
+                                            <h3>Locações Fechadas</h3>
+                                            <h4 class="card-text text-justify" id="home-page-closed-rental">Locações
+                                            </h4>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12 col-lg-4 mt-3">
+                                        <div class="my-card h-100 ">
+                                            <h3>Clientes Ativos</h3>
+                                            <p>
+                                            <h4 class="card-text text-justify" id="home-page-clients-count">Clientes
+                                            </h4>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 col-lg-4 mt-3">
+                                        <div class="my-card h-100">
+                                            <h3>Funcionarios Ativos</h3>
+                                            <h4 class="card-text text-justify" id="home-page-employees-count">
+                                                Funcionarios</h4>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 col-lg-4 mt-3">
+                                        <div class="my-card h-100">
+                                            <h3>Usuarios Ativos</h3>
+                                            <h4 class="card-text text-justify" id="home-page-users-count">Usuarios
+                                            </h4>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12 col-lg-4 mt-3">
+                                        <div class="my-card h-100 ">
+                                            <h3>Veiculos Ativos</h3>
+                                            <h4 class="card-text text-justify" id="home-page-cars-count">Veiculos</h4>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 col-lg-4 mt-3">
+                                        <div class="my-card h-100">
+                                            <h3>Veiculos Disponiveis</h3>
+                                            <h4 class="card-text text-justify" id="home-page-cars-available">Veiculos
+                                            </h4>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <script>
+                                rentUrl = "http://localhost:8080/car-rent/rents/homepage";
+                                fetch(rentUrl)
+                                    .then(response => response.json())
+                                    .then(function a(data) {
+                                        data = JSON.stringify(data.responseObject);
+                                        data = JSON.parse(data);
+                                        document.getElementById("home-page-open-rental").innerHTML = "";
+                                        document.getElementById("home-page-closed-rental").innerHTML = "";
+                                        document.getElementById("home-page-late-rental").innerHTML = "";
+                                        document.getElementById("home-page-clients-count").innerHTML = "";
+                                        document.getElementById("home-page-employees-count").innerHTML = "";
+                                        document.getElementById("home-page-users-count").innerHTML = "";
+                                        document.getElementById("home-page-cars-count").innerHTML = "";
+                                        document.getElementById("home-page-cars-available").innerHTML = "";
+
+                                        document.getElementById("home-page-open-rental").innerHTML = data.openRental + " Locações Abertas";
+                                        document.getElementById("home-page-closed-rental").innerHTML = data.closedRental + " Locações Fechadas";
+                                        document.getElementById("home-page-late-rental").innerHTML = data.lateRental + " Locações Atrasadas";
+                                        document.getElementById("home-page-clients-count").innerHTML = data.activeClients + " Clientes Ativos";
+                                        document.getElementById("home-page-employees-count").innerHTML = data.activeEmployees + " Funcionarios Ativos";
+                                        document.getElementById("home-page-users-count").innerHTML = data.activeUsers + " Usuarios Ativos";
+                                        document.getElementById("home-page-cars-count").innerHTML = data.activeCars + " Veiculos Ativos";
+                                        document.getElementById("home-page-cars-available").innerHTML = data.availableCars + " Veiculos Disponiveis";
+                                    })
+                                    .catch(error => console.error("Unable to get Rents.", error));
+                            </script>
+                        </div>
 
                     </div>
                 </div>
             </nav>
+        </div>
+
+        <!-- Rental Content HTML -->
+        <div id="rent-content" style="display: none;">
+
+            <div class="container">
+                <div class="table-wrapper">
+                    <div class="table-title">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <h3 id="rent-title">Nova Locação</h3>
+                            </div>
+                            <div class="col-sm-8">
+                                <a href="#" onclick="callRentTableOpen(); return false;" class="btn btn-warning">
+                                    <i class="material-icons">&#xeb3c;</i>
+                                    <span>Abertas</span></a>
+
+                                <a href="#" onclick="callRentTableClose(); return false;" class="btn btn-primary">
+                                    <i class="material-icons">&#xe86c;</i>
+                                    <span>Fechadas</span></a>
+
+                                <a href="#" onclick="callRentTableNew(); return false;" class="btn btn-success">
+                                    <i class="material-icons">&#xE147;</i>
+                                    <span>Add Nova</span></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="rent-table-content">
+
+                    </div>
+
+                    <div id="rent-table-new" style="display: none;">
+                        <form action="#">
+                            <div class="form-group col-md-12 ">
+                                <label>Veiculo</label>
+                                <select id="new-rental-car-select" class="form-control" onchange="selectCar()" required>
+                                    <option value="" disabled selected>Selecione o Veiculo</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <label>Cliente</label>
+                                <select id="new-rental-client-select" class="form-control" required>
+                                    <option value="" disabled selected>Selecione o Cliente</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Valor Diaria</label>
+                                <input type="text" id="new-rental-daily-cost" class="form-control" readonly />
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Desconto</label>
+                                <input type="text" id="new-rental-discount" class="form-control" maxlength="9"
+                                    onkeypress="$(this).mask('#.##0,00', {reverse: true});" value="0,00" />
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Data Retirada</label>
+                                <input type="text" id="new-rental-date-withdrawal" class="form-control" readonly />
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Data de Devolução</label>
+                                <input class="form-control" type="datetime-local" id="new-rental-expected-return-date"
+                                    required>
+                            </div>
+                            <div class="modal-body"></div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary"
+                                    onclick="sendNewRental(); return false;">Cadastrar</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div id="rent-table-open" style="display: none;">
+                        <table class="table table-striped table-hover w-auto">
+                            <thead>
+                                <tr>
+                                    <th>Cliente</th>
+                                    <th>Funcionario</th>
+                                    <th>Carro</th>
+                                    <th>Valor/Diaria</th>
+                                    <th>Desconto</th>
+                                    <th>Retirada</th>
+                                    <th>Devolução Prevista</th>
+                                    <th>Marcar Devolução</th>
+                                </tr>
+                            </thead>
+                            <tbody id="rent-open"></tbody>
+                        </table>
+                        <div class="clearfix">
+                            <div id="rent-counter" class="hint-text"></div>
+                        </div>
+                    </div>
+
+                    <div id="rent-table-close" style="display: none;">
+                        <table class="table table-striped table-hover w-auto">
+                            <thead>
+                                <tr>
+                                    <th>Cliente</th>
+                                    <th>Funcionario</th>
+                                    <th>Carro</th>
+                                    <th>Valor/Diaria</th>
+                                    <th>Desconto</th>
+                                    <th>Retirada</th>
+                                    <th>Devolução Prevista</th>
+                                    <th>Devolução Efetiva</th>
+                                </tr>
+                            </thead>
+                            <tbody id="rent-close"></tbody>
+                        </table>
+                        <div class="clearfix">
+                            <div id="rent-counter" class="hint-text"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Client Modal HTML -->
+            <div id="showClientModal" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <form action="javascript:void(0);">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Detalhes do Cliente</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                    &times;
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label>Nome</label>
+                                    <input type="text" id="rental-client-name" class="form-control" readonly />
+                                </div>
+                                <div class="form-group">
+                                    <label>RG</label>
+                                    <input type="text" id="rental-client-rg" class="form-control" readonly />
+                                </div>
+                                <div class="form-group">
+                                    <label>CPF</label>
+                                    <input type="text" id="rental-client-cpf" class="form-control" readonly />
+                                </div>
+                                <div class="form-group">
+                                    <label>Nascimento</label>
+                                    <input type="text" id="rental-client-birthday" class="form-control" readonly />
+                                </div>
+                                <div class="form-group">
+                                    <label>Telefone</label>
+                                    <input type="text" id="rental-client-contact" class="form-control" readonly />
+                                </div>
+                                <div class="form-group">
+                                    <label>Email</label>
+                                    <input type="text" id="rental-client-email" class="form-control" readonly />
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <input type="button" class="btn btn-primary" data-dismiss="modal" value="OK" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Employee Modal HTML -->
+            <div id="showEmployeeModal" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <form action="javascript:void(0);">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Detalhes do Funcionario</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                    &times;
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label>Nome</label>
+                                    <input type="text" id="rental-employee-name" class="form-control" readonly />
+                                </div>
+                                <div class="form-group">
+                                    <label>Matricula</label>
+                                    <input type="text" id="rental-employee-serial" class="form-control" readonly />
+                                </div>
+                                <div class="form-group">
+                                    <label>CPF</label>
+                                    <input type="text" id="rental-employee-cpf" class="form-control" readonly />
+                                </div>
+                                <div class="form-group">
+                                    <label>Cargo</label>
+                                    <input type="text" id="rental-employee-role" class="form-control" readonly />
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <input type="button" class="btn btn-primary" data-dismiss="modal" value="OK" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Car Modal HTML -->
+            <div id="showCarModal" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <form action="javascript:void(0);">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Detalhes do Veiculo</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                    &times;
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label>Modelo</label>
+                                    <input type="text" id="rental-car-model" class="form-control" readonly />
+                                </div>
+                                <div class="form-group">
+                                    <label>Placa</label>
+                                    <input type="text" id="rental-car-plate" class="form-control" readonly />
+                                </div>
+                                <div class="form-group">
+                                    <label>Marca</label>
+                                    <input type="text" id="rental-car-brand" class="form-control" readonly />
+                                </div>
+                                <div class="form-group">
+                                    <label>Gategoria</label>
+                                    <input type="text" id="rental-car-group" class="form-control" readonly />
+                                </div>
+                                <div class="form-group">
+                                    <label>Cor</label>
+                                    <input type="text" id="rental-car-color" class="form-control" readonly />
+                                </div>
+                                <div class="form-group">
+                                    <label>Ano</label>
+                                    <input type="text" id="rental-car-year" class="form-control" readonly />
+                                </div>
+                                <div class="form-group">
+                                    <label>Preço Diaria</label>
+                                    <input type="text" id="rental-car-rent-price" class="form-control" readonly />
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <input type="button" class="btn btn-primary" data-dismiss="modal" value="OK" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Check Return Modal HTML -->
+            <div id="checkReturnRent" class="modal fade">
+                <input type="hidden" id="rental-id" />
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <form action="javascript:void(0);" onsubmit="setRentReturn()">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Marcar Devolução</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                    &times;
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Você tem certeza que deseja marcar devolução desse Veiculo?</p>
+                                <p class="text-warning">
+                                    <small>Esta acão não é reversivel.</small>
+                                </p>
+                            </div>
+                            <div class="modal-footer">
+                                <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel" />
+                                <input type="submit" class="btn btn-success" value="OK" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <script src="./js/rental.js"></script>
+            <script>
+                $("#checkReturnRent").submit(function () {
+                    $("#checkReturnRent").modal("hide");
+                });
+
+                function sendNewRental() {
+                    AddNewRental();
+                }
+
+                function selectCar() {
+                    let id = document.getElementById("new-rental-car-select").value;
+                    const car = selectCars.find(item => item.id == id);
+                    document.getElementById("new-rental-daily-cost").value = car.rentPrice;
+                }
+
+                function callRentTableOpen() {
+                    document.getElementById("rent-title").innerHTML = '';
+                    document.getElementById("rent-title").innerHTML = 'Locações Abertas';
+
+                    myDiv = document.getElementById("rent-table-open").cloneNode(true);
+                    myDiv.id = "rent-table-open-clone"
+                    document.getElementById("rent-table-content").innerHTML = '';
+                    myDiv.style.display = "";
+                    $(myDiv).appendTo("#rent-table-content");
+                    getRentOpen();
+                }
+
+                function callRentTableClose() {
+                    document.getElementById("rent-title").innerHTML = '';
+                    document.getElementById("rent-title").innerHTML = 'Locações Fechadas';
+
+                    myDiv = document.getElementById("rent-table-close").cloneNode(true);
+                    myDiv.id = "rent-table-close-clone"
+                    document.getElementById("rent-table-content").innerHTML = '';
+                    myDiv.style.display = "";
+                    $(myDiv).appendTo("#rent-table-content");
+                    getRentClose();
+                }
+
+                function callRentTableNew() {
+                    document.getElementById("rent-title").innerHTML = '';
+                    document.getElementById("rent-title").innerHTML = 'Nova Locação';
+
+                    myDiv = document.getElementById("rent-table-new").cloneNode(true);
+                    myDiv.id = "rent-table-new-clone"
+                    document.getElementById("rent-table-content").innerHTML = '';
+                    myDiv.style.display = "";
+                    $(myDiv).appendTo("#rent-table-content");
+                    loadRentNew();
+                }
+                callRentTableNew();
+            </script>
         </div>
 
         <div id="client-content" style="display: none;">
@@ -94,7 +524,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-sm-2">
+                            <div class="col-sm-6">
                                 <a href="#addClientModal" class="btn btn-success" data-toggle="modal"><i
                                         class="material-icons">&#xE147;</i>
                                     <span>Add New Client</span></a>
@@ -434,7 +864,9 @@
                                 <th>Modelo</th>
                                 <th>Ano</th>
                                 <th>Placa</th>
+                                <th>Categoria</th>
                                 <th>Cor</th>
+                                <th>Diaria</th>
                                 <th>Opções</th>
                             </tr>
                         </thead>
@@ -459,8 +891,28 @@
                             <div class="modal-body">
                                 <div class="form-group">
                                     <label>Brand</label>
-                                    <input type="text" id="add-car-brand" placeholder="Enter Car Brand"
-                                        class="form-control" required />
+                                    <select id="add-car-brand" class="form-control" required>
+                                        <option value="" disabled selected>Selecione o Marca</option>
+                                        <option value="1">Chevrolet</option>
+                                        <option value="2">Citroën</option>
+                                        <option value="3">Fiat</option>
+                                        <option value="4">Ford</option>
+                                        <option value="5">Honda</option>
+                                        <option value="6">Hyundai</option>
+                                        <option value="7">JAC</option>
+                                        <option value="8">Jeep</option>
+                                        <option value="9">Kia</option>
+                                        <option value="10">Lifan</option>
+                                        <option value="11">Mercedes-Benz</option>
+                                        <option value="12">Mitsubishi</option>
+                                        <option value="13">Nissan</option>
+                                        <option value="14">Peugeot</option>
+                                        <option value="15">Renault</option>
+                                        <option value="16">Suzuki</option>
+                                        <option value="17">Toyota</option>
+                                        <option value="18">Volkswagen</option>
+                                        <option value="19">Volvo</option>
+                                    </select>
                                 </div>
                                 <div class="form-group">
                                     <label>Model</label>
@@ -479,8 +931,36 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Color</label>
-                                    <input type="text" id="add-car-color" placeholder="Enter Car Color"
-                                        class="form-control" required />
+                                    <select id="add-car-color" class="form-control" required>
+                                        <option value="" disabled selected>Selecione a Cor do Carro</option>
+                                        <option value="1">Prata</option>
+                                        <option value="2">Preto</option>
+                                        <option value="3">Cinza</option>
+                                        <option value="4">Branco</option>
+                                        <option value="5">Vermelho</option>
+                                        <option value="6">Azul</option>
+                                        <option value="7">Verde</option>
+                                        <option value="8">Roxo</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Categoria</label>
+                                    <select id="add-car-group" class="form-control" required>
+                                        <option value="" disabled selected>Selecione a Categoria</option>
+                                        <option value="1">Hatch</option>
+                                        <option value="2">Sedã</option>
+                                        <option value="3">Familiar</option>
+                                        <option value="4">Picape</option>
+                                        <option value="5">SUV</option>
+                                        <option value="6">Esportivo</option>
+                                        <option value="7">Van</option>
+                                        <option value="8">Furgão</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Valor Diaria</label>                                    
+                                    <input type="text" id="add-car-daily-cost" class="form-control" maxlength="9"
+                                    onkeypress="$(this).mask('#.##0,00', {reverse: true});" value="0,00" />
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -506,8 +986,28 @@
                             <div class="modal-body">
                                 <div class="form-group">
                                     <label>Brand</label>
-                                    <input type="text" id="edit-car-brand" placeholder="Enter Car Brand"
-                                        class="form-control" required />
+                                    <select id="edit-car-brand" class="form-control" required>
+                                        <option value="" disabled selected>Selecione o Marca</option>
+                                        <option value="1">Chevrolet</option>
+                                        <option value="2">Citroën</option>
+                                        <option value="3">Fiat</option>
+                                        <option value="4">Ford</option>
+                                        <option value="5">Honda</option>
+                                        <option value="6">Hyundai</option>
+                                        <option value="7">JAC</option>
+                                        <option value="8">Jeep</option>
+                                        <option value="9">Kia</option>
+                                        <option value="10">Lifan</option>
+                                        <option value="11">Mercedes-Benz</option>
+                                        <option value="12">Mitsubishi</option>
+                                        <option value="13">Nissan</option>
+                                        <option value="14">Peugeot</option>
+                                        <option value="15">Renault</option>
+                                        <option value="16">Suzuki</option>
+                                        <option value="17">Toyota</option>
+                                        <option value="18">Volkswagen</option>
+                                        <option value="19">Volvo</option>
+                                    </select>
                                 </div>
                                 <div class="form-group">
                                     <label>Model</label>
@@ -526,10 +1026,38 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Color</label>
-                                    <input type="text" id="edit-car-color" placeholder="Enter Car Color"
-                                        class="form-control" required />
+                                    <select id="edit-car-color" class="form-control" required>
+                                        <option value="" disabled selected>Selecione a Cor do Carro</option>
+                                        <option value="1">Prata</option>
+                                        <option value="2">Preto</option>
+                                        <option value="3">Cinza</option>
+                                        <option value="4">Branco</option>
+                                        <option value="5">Vermelho</option>
+                                        <option value="6">Azul</option>
+                                        <option value="7">Verde</option>
+                                        <option value="8">Roxo</option>
+                                    </select>
                                 </div>
-                            </div>
+                                <div class="form-group">
+                                    <label>Categoria</label>
+                                    <select id="edit-car-group" class="form-control" required>
+                                        <option value="" disabled selected>Selecione a Categoria</option>
+                                        <option value="1">Hatch</option>
+                                        <option value="2">Sedã</option>
+                                        <option value="3">Familiar</option>
+                                        <option value="4">Picape</option>
+                                        <option value="5">SUV</option>
+                                        <option value="6">Esportivo</option>
+                                        <option value="7">Van</option>
+                                        <option value="8">Furgão</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Valor Diaria</label>                                   
+                                    <input type="text" id="edit-car-daily-cost" class="form-control" maxlength="9"
+                                    onkeypress="$(this).mask('#.##0,00', {reverse: true});" value="0,00" />
+                                </div>
+                            </div>                            
                             <div class="modal-footer">
                                 <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel" />
                                 <input type="submit" class="btn btn-info" value="Save" />
@@ -581,7 +1109,6 @@
                 });
             </script>
         </div>
-
 
         <div id="employee-content" style="display: none;">
             <div class="container">
@@ -648,8 +1175,11 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Employee Role</label>
-                                    <input type="text" id="add-employee-role" placeholder="Enter Employee Role"
-                                        class="form-control" required />
+                                    <select id="add-employee-role" class="form-control" required>
+                                        <option value="" disabled selected>Selecione o Cargo</option>
+                                        <option value="1">Vendedor</option>
+                                        <option value="2">Gerente</option>
+                                    </select>                                    
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -690,8 +1220,11 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Employee Role</label>
-                                    <input type="text" id="edit-employee-role"
-                                        placeholder="Enter Employee Employee Role" class="form-control" required />
+                                    <select id="edit-employee-role" class="form-control" required>
+                                        <option value="" disabled selected>Selecione o Cargo</option>
+                                        <option value="1">Vendedor</option>
+                                        <option value="2">Gerente</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -732,7 +1265,7 @@
             <script type="text/javascript">
                 getEmployeeItems();
 
-                $("#addEmployeeModal").submit(function () {                    
+                $("#addEmployeeModal").submit(function () {
                     $("#addEmployeeModal").modal("hide");
                 });
 
@@ -913,18 +1446,6 @@
                 });
             </script>
         </div>
-
-
-        <div id="rent-content" style="display: none;">
-            <p> AAAAAAAAAAAAAAAAAAAAAAAA</p>
-
-        </div>
-
-        <div id="home-content" style="display: none;">
-            <p> BBBBBBBBBBBBBBBBBBBBBBBBB</p>
-        </div>
-
-
     </div>
 
     <script type="text/javascript">
@@ -934,56 +1455,49 @@
             });
         });
 
-        var currentUser = null;
+        var currentUser = window.localStorage.getItem("currentUser");
         var myDiv;
 
         function callUserContent() {
             myDiv = document.getElementById("user-content").cloneNode(true);
             myDiv.id = "user-content-clone"
-            document.getElementById("sub-content").innerHTML = '';          
-            myDiv.style.display = "";           
+            document.getElementById("sub-content").innerHTML = '';
+            myDiv.style.display = "";
             $(myDiv).appendTo("#sub-content");
         }
 
         function callClientContent() {
             myDiv = document.getElementById("client-content").cloneNode(true);
             myDiv.id = "client-content-clone"
-            document.getElementById("sub-content").innerHTML = '';          
-            myDiv.style.display = "";           
+            document.getElementById("sub-content").innerHTML = '';
+            myDiv.style.display = "";
             $(myDiv).appendTo("#sub-content");
         }
 
         function callCarContent() {
             myDiv = document.getElementById("car-content").cloneNode(true);
             myDiv.id = "car-content-clone"
-            document.getElementById("sub-content").innerHTML = '';          
-            myDiv.style.display = "";           
+            document.getElementById("sub-content").innerHTML = '';
+            myDiv.style.display = "";
             $(myDiv).appendTo("#sub-content");
         }
 
         function callEmployeeContent() {
             myDiv = document.getElementById("employee-content").cloneNode(true);
             myDiv.id = "employee-content-clone"
-            document.getElementById("sub-content").innerHTML = '';          
-            myDiv.style.display = "";           
+            document.getElementById("sub-content").innerHTML = '';
+            myDiv.style.display = "";
             $(myDiv).appendTo("#sub-content");
         }
 
         function callRentContent() {
             myDiv = document.getElementById("rent-content").cloneNode(true);
             myDiv.id = "rent-content-clone"
-            document.getElementById("sub-content").innerHTML = '';          
-            myDiv.style.display = "";           
+            document.getElementById("sub-content").innerHTML = '';
+            myDiv.style.display = "";
             $(myDiv).appendTo("#sub-content");
         }
 
-        function callHomeContent() {
-            myDiv = document.getElementById("home-content").cloneNode(true);
-            myDiv.id = "home-content-clone"
-            document.getElementById("sub-content").innerHTML = '';          
-            myDiv.style.display = "";           
-            $(myDiv).appendTo("#sub-content");
-        }
     </script>
 </body>
 
