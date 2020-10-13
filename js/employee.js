@@ -46,7 +46,7 @@ function deleteEmployeeItem() {
   const itemId = document.getElementById("delete-employee-id").value.trim();
   const item = {
     id: parseInt(itemId, 10),
-    deletedBy: 1
+    deletedBy: currentUser
   };
   fetch(`${uriEmployee}/delete`, {
     method: "PATCH",
@@ -146,7 +146,7 @@ function _displayEmployeesItems(data) {
     td3.appendChild(textYear);
 
     let td4 = tr.insertCell(3);
-    let textEmployeePlate = document.createTextNode(item.role);
+    let textEmployeePlate = document.createTextNode( (item.role === 1 ) ? "Vendedor" : "Gerente");
     td4.appendChild(textEmployeePlate);
 
     let td5 = tr.insertCell(4);
