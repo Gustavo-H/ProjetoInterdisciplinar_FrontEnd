@@ -37,7 +37,9 @@ function _checkUser(data) {
 
   if (data.login == document.getElementById("input-login").value.trim()) {
     document.getElementById("msg-error").style.visibility = "hidden";
-    window.open("./html/client.html", "_self")
+    
+    window.localStorage.setItem("currentUser", data.id);
+    window.open("./index.html", "_self")
   }
   else {
     document.getElementById("input-password").style.borderColor = 'red';
@@ -200,7 +202,7 @@ function deleteUserItem() {
   const itemId = document.getElementById("delete-id").value.trim();
   const item = {
     id: parseInt(itemId, 10),
-    deletedBy: 1
+    deletedBy: currentUser
   };
   
   fetch(`${uriUser}/delete`, {
