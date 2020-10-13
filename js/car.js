@@ -1,5 +1,6 @@
 const uriCars = "http://localhost:8080/car-rent/cars";
 let cars = [];
+let carsEdit = [];
 
 function getCarItems() {  
   /*axios.get('http://localhost:8080/car-rent/cars/all')
@@ -16,6 +17,15 @@ function getCarItems() {
     .then(response => response.json())
     .then(data => _displayCarItems(data))
     .catch(error => console.error("Unable to get Cars.", error));
+
+  fetch(uriCars + "/all/edit")
+  .then(response => response.json())
+  .then(function a(data) {
+    data = JSON.stringify(data.responseObject);
+    data = JSON.parse(data);
+    carsEdit = data;
+  })
+  .catch(error => console.error("Unable to get Cars.", error));
 }
 
 function addCarItem() {
@@ -24,13 +34,16 @@ function addCarItem() {
   const yearInputText = document.getElementById("add-car-year");
   const carPlateInputText = document.getElementById("add-car-plate");
   const colorInputText = document.getElementById("add-car-color");
-
+  const group = document.getElementById("add-car-group");
+  const dailyCost = document.getElementById("add-car-daily-cost");
   const item = {
-    brand: brandInputText.value.trim(),
+    brand: parseInt(brandInputText.value.trim()),
     model: modelInputText.value.trim(),
-    year: yearInputText.value.trim(),
+    year: parseInt(yearInputText.value.trim()),
     carPlate: carPlateInputText.value.trim(),
-    color: parseInt(colorInputText.value.trim())
+    color: parseInt(colorInputText.value.trim()),
+    group: parseInt(group.value.trim()),
+    rentPrice: parseFloat(dailyCost.value.trim())
   };
 
   fetch(uriCars, {
@@ -49,6 +62,8 @@ function addCarItem() {
       yearInputText.value = "";
       carPlateInputText.value = "";
       colorInputText.value = "";
+      group.value = "";
+      dailyCost.value = "";
     })
     .catch(error => console.error("Unable to add Car.", error));
 }
@@ -57,7 +72,7 @@ function deleteCarItem() {
   const itemId = document.getElementById("delete-car-id").value.trim();
   const item = {
     id: parseInt(itemId, 10),
-    deletedBy: 1
+    deletedBy: currentUser
   };
   console.log(item);
   fetch(`${uriCars}/delete`, {
@@ -78,24 +93,29 @@ function displayDeleteForm_Car(id) {
 }
 
 function displayEditForm_Car(id) {
-  const item = cars.find(item => item.id === id);
+  const item = carsEdit.find(item => item.id === id);
+
   document.getElementById("edit-car-id").value = item.id;
   document.getElementById("edit-car-brand").value = item.brand;
   document.getElementById("edit-car-model").value = item.model;
   document.getElementById("edit-car-year").value = item.year;
   document.getElementById("edit-car-plate").value = item.carPlate;
   document.getElementById("edit-car-color").value = item.color;
+  document.getElementById("edit-car-group").value = item.group;
+  document.getElementById("edit-car-daily-cost").value = item.rentPrice;
 }
 
 function updateCarItem() {
   const itemId = document.getElementById("edit-car-id").value.trim();
   const item = {
     id: parseInt(itemId, 10),
-    brand: document.getElementById("edit-car-brand").value.trim(),
+    brand: parseInt(document.getElementById("edit-car-brand").value.trim()),
     model: document.getElementById("edit-car-model").value.trim(),
-    year: document.getElementById("edit-car-year").value.trim(),
+    year: parseInt(document.getElementById("edit-car-year").value.trim()),
     carPlate: document.getElementById("edit-car-plate").value.trim(),
-    color: parseInt(document.getElementById("edit-car-color").value.trim())
+    color: parseInt(document.getElementById("edit-car-color").value.trim()),
+    group: parseInt(document.getElementById("edit-car-group").value.trim()),
+    rentPrice: parseFloat(document.getElementById("edit-car-daily-cost").value.trim())
   };
 
   fetch(`${uriCars}/update`, {
@@ -165,12 +185,20 @@ function _displayCarItems(data) {
     td4.appendChild(textCarPlate);
 
     let td5 = tr.insertCell(4);
-    let textColor = document.createTextNode(item.color);
-    td5.appendChild(textColor);
+    let txtGroup = document.createTextNode(item.group);
+    td5.appendChild(txtGroup);
 
     let td6 = tr.insertCell(5);
-    td6.appendChild(editButton);
-    td6.appendChild(deleteButton);
+    let textColor = document.createTextNode(item.color);
+    td6.appendChild(textColor);
+
+    let td7 = tr.insertCell(6);
+    let txtCost = document.createTextNode(item.rentPrice);
+    td7.appendChild(txtCost);
+
+    let td8 = tr.insertCell(7);
+    td8.appendChild(editButton);
+    td8.appendChild(deleteButton);
   });
 
   cars = data;
