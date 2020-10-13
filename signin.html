@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>CarRent</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="./css/site.css" />
+    <link rel="icon" href="./img/CarRentIco.png" />
+</head>
+
+<body class="text-center body-signin">
+    <form class="form-signin">
+        <img class="mb-4" src="./img/CarRentIco.png" alt="" width="150" height="72">
+        <h1 class="h3 mb-3 font-weight-normal">Insira Login e Senha</h1>
+        <p class="mt-5 mb-3 text-muted" id="msg-error">Usuario ou Senha Invalidos. Tente Novamente!</p>
+        <label class="sr-only">Login</label>
+        <input type="text" id="input-login" maxlength="100" class="form-control" placeholder="Login" required=""
+            autofocus="">
+        <label class="sr-only">Senha</label>
+        <input type="password" id="input-password" maxlength="100" class="form-control" placeholder="Senha" required="">
+        <div class="checkbox mb-3">
+            <label>
+                <a id="forgot-password"> Esqueci a Senha </a>
+            </label>
+        </div>
+        <button class="btn btn-lg btn-primary btn-block" onclick="validateLogin()" type="submit">Sign in</button>
+        <button type="button" class="btn btn-lg btn-success btn-block" data-toggle="modal"
+            data-target="#addUserModal">Registrar</button>
+    </form>
+
+    <!--Add User Modal -->
+    <div id="addUserModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form name="modal-add-user" action="javascript:void(0);" method="POST" onsubmit="addUserItem()">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Criar Usuario</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Eu sou ?</label> <br>
+                            <input type="radio" id="rd-client" onclick="radioClick(this.value);" name="type" value="2"
+                                required>
+                            <label>Cliente</label>
+                            &emsp; &emsp;
+                            <input type="radio" id="rd-employee" onclick="radioClick(this.value);" name="type" value="1"
+                                required>
+                            <label>Funcionario</label><br>
+                        </div>
+
+                        <div class="form-group">
+                            <p class="mt-5 mb-3 text-muted" id="msg-error-cpf">CPF Incorreto. Tente Novamente!</p>
+                            <label id="lbl-add-cpf">CPF</label>
+                            <input type="text" id="add-cpf" placeholder="Informe seu CPF" class="form-control" required
+                                onkeypress="$(this).mask('000.000.000-00');" />
+                        </div>
+                        <div class="form-group">
+                            <p class="mt-5 mb-3 text-muted" id="msg-error-birthday">Data de Nascimento Incorreta. Tente
+                                Novamente!</p>
+                            <label id="lbl-add-birthday">Nascimento</label>
+                            <input type="text" id="add-birthday" placeholder="Informe sua data de Nascimento"
+                                class="form-control" onkeypress="$(this).mask('00/00/0000');" />
+                        </div>
+                        <div class="form-group">
+                            <p class="mt-5 mb-3 text-muted" id="msg-error-serial">Esta Matricula não Existe. Tente
+                                Novamente!</p>
+                            <label id="lbl-add-serial">Matricula</label>
+                            <input type="text" id="add-serial" placeholder="Informe sua Matricula"
+                                class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <p class="mt-5 mb-3 text-muted" id="msg-error-login">Este Login Já Existe. Tente Novamente!
+                            </p>
+                            <label id="lbl-add-login">Login</label>
+                            <input type="text" id="add-login" placeholder="Cadastre um Login" maxlength="20"
+                                class="form-control" required />
+                        </div>
+                        <div class="form-group">
+                            <label id="lbl-add-password">Senha</label>
+                            <input type="text" id="add-password" placeholder="Cadastre um Senha" maxlength="20"
+                                class="form-control" required />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel" />
+                        <input id="btn-add" type="submit" class="btn btn-success" value="Create" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="./js/user.js" asp-append-version="true"></script>
+    <script type="text/javascript">
+
+        $("#addUserModal").submit(function () {
+            $("#addUserModal").modal("hide");
+        });
+
+        $("#editUserModal").submit(function () {
+            $("#editUserModal").modal("hide");
+        });
+
+        $("#deleteUserModal").submit(function () {
+            $("#deleteUserModal").modal("hide");
+        });
+
+        document.getElementById("msg-error").style.visibility = "hidden";
+        document.getElementById("msg-error").style.color = "red";
+
+        $("#input-login").focusin(function () {
+            document.getElementById("input-login").style.borderColor = '';
+            //document.getElementById("msg-error").style.visibility = "hidden";
+        });
+
+        $("#input-password").focusin(function () {
+            document.getElementById("input-password").style.borderColor = '';
+            //document.getElementById("msg-error").style.visibility = "hidden";
+        });
+
+        //Modal Add User config
+
+        document.getElementById("btn-add").setAttribute("disabled", "disabled");
+
+        document.getElementById("msg-error-login").style.display = "none";
+        document.getElementById("msg-error-login").style.color = "red";
+
+        document.getElementById("msg-error-cpf").style.display = "none";
+        document.getElementById("msg-error-cpf").style.color = "red";
+
+        document.getElementById("msg-error-birthday").style.display = "none";
+        document.getElementById("msg-error-birthday").style.color = "red";
+
+        document.getElementById("msg-error-serial").style.display = "none";
+        document.getElementById("msg-error-serial").style.color = "red";
+
+        document.getElementById("add-cpf").style.visibility = "hidden";
+        document.getElementById("add-birthday").style.visibility = "hidden";
+        document.getElementById("add-serial").style.visibility = "hidden";
+        document.getElementById("add-login").style.visibility = "hidden";
+        document.getElementById("add-password").style.visibility = "hidden";
+
+        document.getElementById("lbl-add-cpf").style.visibility = "hidden";
+        document.getElementById("lbl-add-birthday").style.visibility = "hidden";
+        document.getElementById("lbl-add-serial").style.visibility = "hidden";
+        document.getElementById("lbl-add-login").style.visibility = "hidden";
+        document.getElementById("lbl-add-password").style.visibility = "hidden";
+
+        $("#add-login").focusout(function () {
+            checkForLogin(document.getElementById("add-login").value);
+        });
+
+        $("#add-login").focusin(function () {
+            document.getElementById("add-login").style.borderColor = '';
+        });
+
+        $("#add-cpf").focusout(function () {
+            checkForCpf(document.getElementById("add-cpf").value);
+        });
+
+        $("#add-birthday").focusout(function () {
+            if (client.birthday != document.getElementById("add-birthday").value) {
+                document.getElementById("add-birthday").style.borderColor = "red";
+                document.getElementById("msg-error-birthday").style.color = "red";
+                document.getElementById("msg-error-birthday").style.display = "";
+            }
+            else {
+                document.getElementById("msg-error-birthday").style.display = "none";
+                document.getElementById("add-birthday").style.borderColor = "";
+            }
+        });
+
+        $("#add-serial").focusout(function () {
+            if (employee.serial != document.getElementById("add-serial").value) {
+                document.getElementById("add-serial").style.borderColor = "red";
+                document.getElementById("msg-error-serial").style.color = "red";
+                document.getElementById("msg-error-serial").style.display = "";
+            }
+            else {
+                document.getElementById("msg-error-serial").style.display = "none";
+                document.getElementById("add-serial").style.borderColor = "";
+            }           
+        });
+    </script>
+</body>
+
+</html>
