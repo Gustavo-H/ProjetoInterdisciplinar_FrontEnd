@@ -82,7 +82,7 @@ function deleteClientItem() {
 
   const item = {
     id: parseInt(itemId, 10),
-    deletedBy: 1
+    deletedBy: currentUser
   };
 
   console.log(item);
