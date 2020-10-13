@@ -1,3 +1,24 @@
+/*Home Page CSS*/
+.my-card {
+  border-radius: 5px;
+  background-color: rgb(216, 216, 224);
+  color: #435d7d;;
+  padding-top: 5px;
+  padding-right: 5px;
+  padding-bottom: 5px;
+  padding-left: 20px;
+  margin: 20px;
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  justify-content: center;
+}
+
+
+/*End Home Page CSS*/
+
+
+
 /*Signin CSS*/
 
 .body-signin {
@@ -58,14 +79,25 @@ body {
   font-size: 13px;
 }
 
+.central-title {
+  background: transparent;
+  color: white;
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  margin-right: -80%;
+  transform: translate(-50%, -50%) 
+  /*display: flex;
+  flex-direction: row;
+  justify-content: space-between;*/
+}
 
-/*
 .button-title {
   position: absolute;
   top: 5%;
   left: 58%;
 }
-*/
+
 .table-wrapper {
   background: #fff;
   padding: 20px 25px;
